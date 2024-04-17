@@ -1,0 +1,8 @@
+langchain-community==0.0.33
+langchain-text-splitters==0.0.1
+spacy==3.7.4
+pypdf==4.2.0
+pymilvus==2.4.0
+python-dotenv==1.0.1
+
+en-core-web-sm==3.7.1
