@@ -130,6 +130,7 @@ venv.bak/
 
 # Volumes
 volumes/
+.volumes
 
 # Spyder project settings
 .spyderproject
