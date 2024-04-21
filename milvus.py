@@ -7,6 +7,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 from dotenv import load_dotenv
 
+from datetime import datetime
+
 load_dotenv()
 
 loader = PyPDFLoader("data/sample.pdf")
@@ -23,15 +25,20 @@ embedder = SpacyEmbeddings(model_name="en_core_web_sm")
 
 for doc in docs:
     doc.metadata["source"]=os.path.basename(doc.metadata['source'])
-    vector_db = Milvus.from_documents(
-        docs,
-        embedder,
-        drop_old = True,
-        connection_args={"host": os.getenv("MILVUS_HOST"), "port": os.getenv("MILVUS_PORT")},
-    )
 
-query = "Where did Jack go"
+print(f'embedding start time: {datetime.now()}')
+vector_db = Milvus.from_documents(
+    docs,
+    embedder,
+    drop_old = True,
+    connection_args={"host": os.getenv("MILVUS_HOST"), "port": os.getenv("MILVUS_PORT")},
+)
+print(f'embedding end time: {datetime.now()}')
+
+print(f'retrieval start time: {datetime.now()}')
+query = "while Jack was rummaging through the attic of his old family house"
 docs = vector_db.similarity_search_with_score(query, k=3)
+print(f'retrieval end time: {datetime.now()}')
 
 response = []
 for doc, score in docs:
